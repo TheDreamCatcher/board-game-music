@@ -1,5 +1,6 @@
 let listOfThemes = [];
 let currentTheme = { name: null };
+let isUpdatingTheme;
 
 $(function () {
     const spinner = $(`<div class="spinner-border spinner-border-sm float-end" role="status">
@@ -20,6 +21,7 @@ $(function () {
         if (loading) {
             return false;
         }
+
         const self = $(this);
 
         self.append(spinner.clone());
@@ -46,10 +48,18 @@ $(function () {
 
         const page = $(`.js-page[data-page="${pageName}"]`);
         page.removeClass('d-none');
+
+        switch (pageName) {
+            case 'main':
+                isUpdatingTheme = setInterval(updateTheme, 1000);
+                break;
+            default:
+                clearInterval(isUpdatingTheme);
+        }
     });
 });
 
-function monitoringTheme() {
+function updateTheme() {
     jQuery.ajax({
         url: '/api.php?action=get-theme',
         dataType: 'JSON',
@@ -59,11 +69,23 @@ function monitoringTheme() {
 
                 if (theme && currentTheme.name !== theme.name) {
                     currentTheme = theme;
-                    console.log('assets/music/' + theme.music);
-                    $('.js-music').attr("src", 'assets/music/' + theme.music);
-                    $('.js-image').attr('src', 'assets/images/' + theme.image);
+
                     const player = document.getElementById("js-music");
-                    player.play();
+                    player.pause();
+                    $('.js-if-theme-toggle').addClass('d-none');
+
+                    if (theme.name) {
+                        $('.js-music').attr("src", 'assets/music/' + theme.music);
+                        $('.js-image').attr('src', 'assets/images/' + theme.image);
+
+                        player.play();
+
+                        $('.js-if-theme-toggle[data-if_theme="1"]').removeClass('d-none');
+                    } else {
+                        $('.js-if-theme-toggle[data-if_theme="0"]').removeClass('d-none');
+                    }
+
+
                     console.log('changed');
                 }
             }

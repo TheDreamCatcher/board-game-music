@@ -10,9 +10,10 @@ $(function () {
     loadThemes();
 
     for (const themeName in listOfThemes) {
-        const child = $(`<li class="list-group-item js-change" data-theme="${themeName}">
-                            <a href="#">${listOfThemes[themeName].title}</a>
-                        </li>`);
+        const child = $(`<a href="#" 
+class="list-group-item list-group-item-acion js-change" data-theme="${themeName}">
+${listOfThemes[themeName].title}
+</a>`);
         $('.js-list').append(child);
     }
 
@@ -21,6 +22,8 @@ $(function () {
         if (loading) {
             return false;
         }
+
+        $('.js-change').removeClass('active');
 
         const self = $(this);
 
@@ -35,9 +38,17 @@ $(function () {
                 action: 'set-theme',
                 theme: self.data('theme')
             },
+            success: function (res) {
+                if (res.unset) {
+                    self.removeClass('active');
+                } else {
+                    self.addClass('active');
+                }
+            },
             complete: function () {
                 loading = false;
                 self.find('.spinner-border').remove();
+
             },
         });
     });
@@ -51,7 +62,7 @@ $(function () {
 
         switch (pageName) {
             case 'main':
-                isUpdatingTheme = setInterval(updateTheme, 1000);
+                isUpdatingTheme = setInterval(updateTheme, 3000);
                 break;
             default:
                 clearInterval(isUpdatingTheme);
@@ -67,7 +78,7 @@ function updateTheme() {
             if (result.success) {
                 const theme = result.theme
 
-                if (theme && currentTheme.name !== theme.name) {
+                if (currentTheme.name !== theme.name) {
                     currentTheme = theme;
 
                     const player = document.getElementById("js-music");

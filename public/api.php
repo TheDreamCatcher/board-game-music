@@ -18,6 +18,13 @@ $result = [
 switch ($action) {
     case 'set-theme':
         $theme = getRequest('theme');
+        $oldTheme = file_get_contents($themeFile);
+
+        if ($theme === $oldTheme) {
+            $theme = '';
+            $result['unset'] = true;
+        }
+
         $result['success'] = false !== file_put_contents($themeFile, $theme);
         break;
     case 'get-theme':
@@ -27,7 +34,7 @@ switch ($action) {
         if ($theme) {
             $result['theme'] = $listOfThemes[$theme] ?? null;
         } else {
-            $result['theme'] = null;
+            $result['theme'] = new stdClass();
         }
 
         break;

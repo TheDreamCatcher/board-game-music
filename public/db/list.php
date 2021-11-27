@@ -2,6 +2,36 @@
 
 $listOfThemes = [
     [
+        'name' => 'tavern',
+        'title' => 'Таверна',
+        'image' => 'tavern.jpg',
+        'music' => 'tavern.mp3',
+    ],
+    [
+        'name' => 'volcano',
+        'title' => 'Вулкан',
+        'image' => 'volcano.jpg',
+        'music' => 'volcano.mp3',
+    ],
+    [
+        'name' => 'underwater',
+        'title' => 'Подводный мир',
+        'image' => 'underwater.jpg',
+        'music' => 'underwater.mp3',
+    ],
+    [
+        'name' => 'city-in-fire',
+        'title' => 'Город в огне',
+        'image' => 'city-in-fire.jpg',
+        'music' => 'city-in-fire.mp3',
+    ],
+    [
+        'name' => 'sea-cursed',
+        'title' => 'Море проклятое',
+        'image' => 'sea-cursed.jpg',
+        'music' => 'sea-open.mp3',
+    ],
+    [
         'name' => 'city',
         'title' => 'Город',
         'image' => 'city.jpg',

@@ -9,10 +9,10 @@ $(function () {
 
     loadThemes();
 
-    for (const themeName in listOfThemes) {
+    for (const theme of listOfThemes) {
         const child = $(`<a href="#" 
-class="list-group-item list-group-item-acion js-change" data-theme="${themeName}">
-${listOfThemes[themeName].title}
+class="list-group-item list-group-item-acion js-change" data-theme="${theme.name}">
+${theme.title}
 </a>`);
         $('.js-list').append(child);
     }
@@ -95,9 +95,6 @@ function updateTheme() {
                     } else {
                         $('.js-if-theme-toggle[data-if_theme="0"]').removeClass('d-none');
                     }
-
-
-                    console.log('changed');
                 }
             }
         },
@@ -112,7 +109,11 @@ function loadThemes() {
         dataType: 'JSON',
         success: function (result) {
             if (result.success) {
-                listOfThemes = result.list;
+                listOfThemes = result.list.sort((first, second) => {
+                    return first.title < second.title
+                        ? -1
+                        : 1
+                });
             } else {
                 alert('Ошибка получения листа');
             }

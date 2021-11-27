@@ -31,8 +31,16 @@ switch ($action) {
         $result['success'] = true;
         $theme = file_get_contents($themeFile);
 
+        $result['debug'] = $theme;
+
         if ($theme) {
-            $result['theme'] = $listOfThemes[$theme] ?? null;
+            $result['theme'] = new stdClass();
+
+            foreach ($listOfThemes as $themeItem) {
+                if ($themeItem['name'] === $theme) {
+                    $result['theme'] = $themeItem;
+                }
+            }
         } else {
             $result['theme'] = new stdClass();
         }
